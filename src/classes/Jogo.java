@@ -22,7 +22,7 @@ public class Jogo {
 		if(linha > tamanho || coluna > tamanho)throw new Exception("Disparo fora do tabuleiro!");
 		
 		if(tabuleiro[linha][coluna].getSituacao()) {
-			tabuleiro[linha][coluna].setSituacao(false, "");
+			tabuleiro[linha][coluna].setSituacao(false, "ULR DA IMAGEM !!!");
 			return tabuleiro[linha][coluna].getPontos();
 		}
 		return 0;

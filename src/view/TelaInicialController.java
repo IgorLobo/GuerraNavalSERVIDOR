@@ -8,13 +8,13 @@ import java.util.ResourceBundle;
 
 import javax.swing.JOptionPane;
 
+import connection.GerenciadorDeClientes;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import connection.GerenciadorDeClientes;
 
 public class TelaInicialController implements Initializable {
 
@@ -29,16 +29,12 @@ public class TelaInicialController implements Initializable {
 	@FXML
 	private Button btn_abrirServidor;
 
-<<<<<<< HEAD
     @FXML
     private TextField txf_tamanhoDoTabuleiro;
     
     @FXML
     private Label lb_IP;
-=======
-	@FXML
-	private TextField txf_tamanhoDoTabuleiro;
->>>>>>> b2d7c34107ab62d79e6c7d1ff8830a7ca157e8df
+    
 
 //-------------------------------------------------------------------------------------------
 
@@ -93,11 +89,7 @@ public class TelaInicialController implements Initializable {
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-<<<<<<< HEAD
-=======
-		// TODO Auto-generated method stub
-
->>>>>>> b2d7c34107ab62d79e6c7d1ff8830a7ca157e8df
+		
 	}
 
 }
