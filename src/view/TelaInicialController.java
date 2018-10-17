@@ -7,6 +7,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
 public class TelaInicialController implements Initializable {
@@ -19,6 +20,9 @@ public class TelaInicialController implements Initializable {
 
     @FXML
     private TextField txf_tamanhoDoTabuleiro;
+    
+    @FXML
+    private Label lb_IP;
 
 //-------------------------------------------------------------------------------------------
     
@@ -36,8 +40,6 @@ public class TelaInicialController implements Initializable {
 	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		// TODO Auto-generated method stub
-		
 	}
 
 }

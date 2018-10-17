@@ -11,5 +11,7 @@
       <Button fx:id="btn_abrirServidor" layoutX="42.0" layoutY="185.0" mnemonicParsing="false" onAction="#click_btnAbrirServidor" text="Abrir servidor" />
       <TextField fx:id="txf_tamanhoDoTabuleiro" layoutX="252.0" layoutY="185.0" prefHeight="25.0" prefWidth="121.0" />
       <Label layoutX="254.0" layoutY="158.0" text="Tamanho do tabuleiro:" />
+      <Label layoutX="48.0" layoutY="226.0" text="IP do servidor:" />
+      <Label fx:id="lb_IP" layoutX="131.0" layoutY="226.0" prefHeight="17.0" prefWidth="66.0" />
    </children>
 </AnchorPane>
