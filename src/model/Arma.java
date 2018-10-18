@@ -6,8 +6,13 @@ public class Arma {
 	private String nome = "vazio";
 	private int pontos = -1;
 	private String URLimagem = "";
+	private char simbolo = 'L';
 	private boolean situacao = true;
-
+	
+	public Arma() {
+		
+	}
+	
 	public Arma(String nome, int pontos, String URLimagem) {
 		this.nome = nome;
 		this.pontos = pontos;
@@ -22,9 +27,17 @@ public class Arma {
 	public String getNome() {
 		return nome;
 	}
+	
+	public void setNome(String descricao) {
+		this.nome = descricao;
+	}
 
 	public int getPontos() {
 		return pontos;
+	}
+	
+	public void setPontos(int pontos) {
+		this.pontos = pontos;
 	}
 
 	public String getURLimagem() {
@@ -33,6 +46,18 @@ public class Arma {
 
 	public boolean getSituacao() {
 		return situacao;
+	}
+	
+	public void setSituacao(boolean situacao) {
+		this.situacao = situacao;
+	}
+	
+	public void setSimbolo(char simbolo) {
+		this.simbolo = simbolo;
+	}
+	
+	public char getSimbolo() {
+		return simbolo;
 	}
 
 }
