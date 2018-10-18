@@ -11,7 +11,7 @@ import java.net.Socket;
 
 import javax.swing.JOptionPane;
 
-import view.TelaInicialController;
+import controller.TelaInicialController;
 
 public class GerenciadorDeClientes extends Thread{
 
