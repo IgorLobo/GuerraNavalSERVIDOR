@@ -15,6 +15,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextArea;
 
 public class TelaInicialController implements Initializable {
 
@@ -24,23 +25,33 @@ public class TelaInicialController implements Initializable {
 
 //---------------------------COMPONENTES DA TELA FXML----------------------------------------
 	@FXML
+	private TextField txf_ipServidor;
+
+	@FXML
 	private Button btn_iniciarJogo;
 
 	@FXML
-	private Button btn_abrirServidor;
-
-    @FXML
-    private TextField txf_tamanhoDoTabuleiro;
-    
-    @FXML
-    private Label lb_IP;
-    
-
-//-------------------------------------------------------------------------------------------
+	private Button btn_iniciarServidor;
 
 	@FXML
-	void click_btnAbrirServidor(ActionEvent event) {
+	private TextField txf_portaServidor;
 
+	@FXML
+	private Button btn_pararServidor;
+
+	@FXML
+	private Button btn_pararJogo;
+
+	@FXML
+	private TextField txf_tamanhoTabuleiro;
+
+	@FXML
+	private TextArea txtArea_usuariosConectados;
+
+//-----------------------------BUTTONS-------------------------------------------------------
+
+	@FXML
+	void click_btnIniciarServidor(ActionEvent event) {
 		try {
 			// inicio server
 			System.out.println("startando servidor");
@@ -71,6 +82,27 @@ public class TelaInicialController implements Initializable {
 		}
 	}
 
+	@FXML
+	void click_btnPararServidor(ActionEvent event) {
+
+	}
+
+	@FXML
+	void click_btnIniciarJogo(ActionEvent event) {
+
+	}
+
+	@FXML
+	void click_btnPararJogo(ActionEvent event) {
+
+	}
+
+//-----------------------------METODOS-------------------------------------------------------
+	@Override
+	public void initialize(URL arg0, ResourceBundle arg1) {
+
+	}
+
 	public void receberAcessos() throws IOException {
 		try {
 			new GerenciadorDeClientes(cliente);
@@ -81,15 +113,4 @@ public class TelaInicialController implements Initializable {
 		}
 
 	}
-
-	@FXML
-	void click_btnIniciarJogo(ActionEvent event) {
-
-	}
-
-	@Override
-	public void initialize(URL arg0, ResourceBundle arg1) {
-		
-	}
-
 }

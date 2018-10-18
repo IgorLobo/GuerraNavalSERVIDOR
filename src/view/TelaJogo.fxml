@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="485.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.TelaJogoController">
+<AnchorPane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="485.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.TelaJogoController">
    <children>
       <GridPane fx:id="grid" alignment="CENTER" layoutX="176.0" layoutY="8.0" prefHeight="465.0" prefWidth="414.0" styleClass="grid" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="175.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0" />
       <Separator layoutX="167.0" layoutY="123.0" orientation="VERTICAL" prefHeight="306.0" prefWidth="0.0" AnchorPane.bottomAnchor="5.0" AnchorPane.topAnchor="5.0" />
