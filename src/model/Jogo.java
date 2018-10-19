@@ -5,12 +5,12 @@ import java.util.Random;
 
 public class Jogo {
 
-	private Arma[][] tabuleiro;
+	private Arma[][] tabuleiro = null;
 	private int tamanho = -1;
 	private ArrayList<Jogador> JogadoresArrayList;
 
 	public Jogo(int tamanho) throws Exception {
-		if (tamanho < 5)
+		if (tamanho < 3)
 			throw new Exception("O tamanho do tabuleiro não pode ser menor que 5.");
 		this.tamanho = tamanho;
 		tabuleiro = new Arma[tamanho][tamanho];
@@ -41,7 +41,7 @@ public class Jogo {
 		return 0;
 	}
 	
-	public void randomArmas(String descricao, int pontos, char simbolo, boolean situacao, float porcentagem) {
+	private void randomArmas(String descricao, int pontos, char simbolo, boolean situacao, float porcentagem) {
 		int linha = 0;
 		int coluna = 0;
 		int qtdTotalArmas = 0;
@@ -79,10 +79,6 @@ public class Jogo {
 	
 	public Arma[][] getTabuleiro() {
 		return tabuleiro;
-	}
-
-	public void setTabuleiro(Arma tabuleiro[][]) {
-		this.tabuleiro = tabuleiro;
 	}
 
 }

@@ -4,7 +4,7 @@ package model;
 public class Arma {
 
 	private String nome = "vazio";
-	private int pontos = -1;
+	private int pontos = 0;
 	private String URLimagem = "";
 	private char simbolo = 'L';
 	private boolean situacao = true;

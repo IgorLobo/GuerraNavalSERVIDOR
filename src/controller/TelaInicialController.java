@@ -5,17 +5,23 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.URL;
 import java.util.ResourceBundle;
+
 import javax.swing.JOptionPane;
-import javafx.event.EventHandler;
+
+import application.Main;
 import connection.GerenciadorDeClientes;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import model.Jogo;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
+import javafx.stage.Stage;
+import model.Jogo;
 
 public class TelaInicialController implements Initializable {
 
@@ -27,28 +33,29 @@ public class TelaInicialController implements Initializable {
 
 //---------------------------COMPONENTES DA TELA FXML----------------------------------------
 	@FXML
-	private TextField txf_ipServidor;
+    private TextField txf_ipServidor;
 
-	@FXML
-	private Button btn_iniciarJogo;
+    @FXML
+    private Button btn_iniciarJogo;
 
-	@FXML
-	private Button btn_iniciarServidor;
+    @FXML
+    private Button btn_iniciarServidor;
 
-	@FXML
-	private TextField txf_portaServidor;
+    @FXML
+    private TextField txf_portaServidor;
 
-	@FXML
-	private Button btn_pararServidor;
+    @FXML
+    private Button btn_pararServidor;
 
-	@FXML
-	private Button btn_pararJogo;
+    @FXML
+    private Button btn_pararJogo;
 
-	@FXML
-	public static TextField txf_tamanhoTabuleiro;
+    @FXML
+    private TextField txf_tamanhoTabuleiro;
 
-	@FXML
-	private TextArea txtArea_usuariosConectados;
+    @FXML
+    private TextArea txtArea_usuariosConectados;
+    
 
 //-----------------------------BUTTONS-------------------------------------------------------
 
@@ -96,8 +103,8 @@ public class TelaInicialController implements Initializable {
 	}
 
 	@FXML
-	public static void click_btnIniciarJogo(ActionEvent event) {
-		try {
+	public void click_btnIniciarJogo(ActionEvent event) {
+		/*try {
 			int tamanho = Integer.parseInt(txf_tamanhoTabuleiro.getText());
 			Jogo tab = new Jogo(tamanho);
 			TelaJogoController.grid_tabuleiroJogo.setVgap(10);
@@ -131,13 +138,13 @@ public class TelaInicialController implements Initializable {
 
 		} catch (Exception e) {
 			e.getMessage();
-		}
+		}*/
 	}
 
 	
 	@FXML
 	void click_btnPararJogo(ActionEvent event) {
-
+		abrirTela();
 	}
 
 //-----------------------------METODOS-------------------------------------------------------
@@ -157,12 +164,25 @@ public class TelaInicialController implements Initializable {
 
 	}
 	
-	public static void testar(String t) {
-		TelaJogoController.txtArea_historicoJogadas.setText(String.format("%s", t));
+	public void testar(String t) {
+		//TelaJogoController.txtArea_historicoJogadas.setText(String.format("%s", t));
 	}
 	
-	public static void abrirTela() {
-		// TODO Auto-generated method stub
+	public void abrirTela() {
+		try {
+			
+		Parent root = FXMLLoader.load(this.getClass().getResource("/view/TelaJogo.fxml"));
+		Scene cena = new Scene(root);
+		Stage tela = new Stage();
+		tela.setScene(cena);
+		tela.show();
+		tela.setMaximized(true);
+		tela.setResizable(false);
+		
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
 		
 	}
 

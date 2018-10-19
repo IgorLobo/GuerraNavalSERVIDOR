@@ -8,6 +8,8 @@ import javafx.stage.Stage;
 import javafx.event.EventHandler;
 
 public class Main extends Application {
+	public static Stage primaryStage;
+	
 	@Override
 	public void start(Stage primaryStage) {
 		try {
@@ -15,6 +17,7 @@ public class Main extends Application {
 			Scene scene = new Scene(root);
 			primaryStage.setScene(scene);
 			primaryStage.show();
+			this.primaryStage = primaryStage;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
