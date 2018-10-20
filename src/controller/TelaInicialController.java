@@ -20,6 +20,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import model.Jogo;
 
@@ -178,6 +179,7 @@ public class TelaInicialController implements Initializable {
 		tela.show();
 		tela.setMaximized(true);
 		tela.setResizable(false);
+		tela.getIcons().add(new Image(getClass().getResourceAsStream("/images/batalhaNaval.png")));
 		
 		} catch (IOException e) {
 			e.printStackTrace();
