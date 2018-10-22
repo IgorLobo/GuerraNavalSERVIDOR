@@ -6,7 +6,7 @@ import java.util.Random;
 public class Jogo {
 
 	private Arma[][] tabuleiro = null;
-	private int tamanho = -1;
+	private int tamanho = -1;	
 	private ArrayList<Jogador> JogadoresArrayList;
 
 	public Jogo(int tamanho) throws Exception {
@@ -17,12 +17,12 @@ public class Jogo {
 		for (int i = 0; i < tamanho; i++) {
 			for (int j = 0; j < tamanho; j++) {
 				tabuleiro[i][j] = new Arma();
-			}
-			randomArmas("PortaAviao", 5, 'P', true, 0.30f);
-			randomArmas("Submarino", 5, 'S', true, 0.30f);
-			randomArmas("Cruzador", 4, 'C', true, 0.20f);
-			randomArmas("Destroyer", 3, 'D', true, 0.20f);			
+			}						
 		}
+		randomArmas("PortaAviao", 5, 'P', true, 0.30f);
+		randomArmas("Submarino", 5, 'S', true, 0.30f);
+		randomArmas("Cruzador", 4, 'C', true, 0.20f);
+		randomArmas("Destroyer", 3, 'D', true, 0.20f);
 		
 		//JogadoresArrayList = new ArrayList<Jogador>();
 	}
@@ -43,7 +43,7 @@ public class Jogo {
 	
 	private void randomArmas(String descricao, int pontos, char simbolo, boolean situacao, float porcentagem) {
 		int linha = 0;
-		int coluna = 0;
+		int coluna = 0;		
 		int qtdTotalArmas = 0;
 		Random random = new Random();
 		float qtdArmasTotal = ((float) (0.60 * (tamanho * tamanho)));
@@ -51,7 +51,7 @@ public class Jogo {
 
 		float a = ((float) (qtdPorArma));
 		int b = ((int) (a));
-		a -= b;
+		a = a - b;
 
 		if (a >= 0.50f) {
 			qtdPorArma = (int) (porcentagem * qtdArmasTotal);

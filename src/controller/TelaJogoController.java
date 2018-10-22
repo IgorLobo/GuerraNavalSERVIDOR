@@ -1,44 +1,90 @@
 package controller;
 
-import java.awt.TextArea;
 import java.net.URL;
 import java.util.ResourceBundle;
-
+import javax.swing.JOptionPane;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.AnchorPane;
+import javafx.scene.control.TextArea;
 import javafx.scene.layout.GridPane;
+import model.Jogo;
 
 public class TelaJogoController implements Initializable {
 //-----------------------------------ATRIBUTOS-------------------------------------------
-	private static int tamanho;
-	
-	
-	
+	public static int tamanho = -1;
+	private Jogo jogo = null;
+	private String historico = "";
+
 //---------------------------COMPONENTES DA TELA FXML----------------------------------------
-	 @FXML
-	    private AnchorPane pane;
+	@FXML
+	private GridPane grid_tabelaArmas;
 
-	    @FXML
-	    private GridPane grid_tabelaArmas;
+	@FXML
+	private Label lb_armasRestantes;
 
-	    @FXML
-	    private Label lb_armasRestantes;
+	@FXML
+	public GridPane grid_tabuleiroJogo;
 
-	    @FXML
-	    public GridPane grid_tabuleiroJogo;
-	    
-	    
+	@FXML
+	private TextArea txtArea_historicoJogadas;
 
-	
+//--------------------------------------BUTTONS-----------------------------------------------
+	private void iniciarJogo() {
+		try {
+			Jogo tab = new Jogo(tamanho);
+			grid_tabuleiroJogo.setVgap(10);
+			grid_tabuleiroJogo.setHgap(10);
+			grid_tabuleiroJogo.setMinSize(520, 600);
+			grid_tabuleiroJogo.setAlignment(Pos.TOP_LEFT);
+			Button botao[][] = new Button[tamanho][tamanho];
+
+			// For para criar o array de botoes com evento
+			for (int i = 0; i < tamanho; i++) {
+				for (int j = 0; j < tamanho; j++) {
+					botao[i][j] = new Button();
+					botao[i][j].setPrefSize(40, 40);
+					botao[i][j].setId(i + "-" + j);
+					botao[i][j].setOnAction(new EventHandler<ActionEvent>() {
+						public void handle(ActionEvent event) {
+							Button teste = (Button) event.getSource();
+							testar(teste.getId());
+						}
+					});
+				}
+			}
+
+			for (int i = 0; i < tamanho; i++) {
+				for (int j = 0; j < tamanho; j++) {
+					grid_tabuleiroJogo.add(botao[i][j], j, i);
+					botao[i][j].setText("" + tab.getTabuleiro()[i][j].getSimbolo());
+				}
+			}
+
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, e.getMessage(), "ERRO", JOptionPane.ERROR_MESSAGE);
+			e.getMessage();
+		}
+	}
 
 //---------------------------------METODOS------------------------------------------------------
-	
-	    
-	@Override
-	public void initialize(URL arg0, ResourceBundle arg1 ) {
 
+	@Override
+	public void initialize(URL arg0, ResourceBundle arg1) {
+		try {
+			iniciarJogo();
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, e.getMessage(), "ERRO", JOptionPane.ERROR_MESSAGE);
+		}
+	}
+
+	public void testar(String t) {
+		historico += t + "\n";
+		txtArea_historicoJogadas.setText(String.format("%s", historico));
 	}
 
 }

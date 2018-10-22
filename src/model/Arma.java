@@ -13,11 +13,11 @@ public class Arma {
 		
 	}
 	
-	public Arma(String nome, int pontos, String URLimagem) {
+	/*ublic Arma(String nome, int pontos, String URLimagem) {
 		this.nome = nome;
 		this.pontos = pontos;
 		this.URLimagem = URLimagem;
-	}
+	}*/
 
 	public void setSituacao(boolean situacao, String URLimagem) {
 		this.situacao = situacao;
