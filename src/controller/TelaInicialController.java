@@ -129,7 +129,6 @@ public class TelaInicialController implements Initializable {
 			btn_pararServidor.setDisable(true);
 			btn_pararJogo.setDisable(true);	
 		} catch (UnknownHostException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}			
 	}
@@ -139,7 +138,7 @@ public class TelaInicialController implements Initializable {
 		try {
 			new GerenciadorDeClientes(cliente);
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null, "Porta indisponivel ou servidor disconectado", "ERRO",
+			JOptionPane.showMessageDialog(null, "Porta indisponivel ou servidor desconectado", "ERRO",
 					JOptionPane.ERROR_MESSAGE);
 			e.printStackTrace();
 		}
@@ -154,6 +153,7 @@ public class TelaInicialController implements Initializable {
 		tela.show();
 		tela.setMaximized(true);
 		tela.setResizable(false);
+		tela.setTitle("JOGO GUERRA NAVAL");
 		tela.getIcons().add(new Image(getClass().getResourceAsStream("/images/batalhaNaval.png")));
 		
 		} catch (IOException e) {

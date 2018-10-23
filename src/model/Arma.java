@@ -5,20 +5,14 @@ public class Arma {
 
 	private String nome = "vazio";
 	private int pontos = 0;
-	private String URLimagem = "";
+	private String URLimagem = "/images/Livre.jpg";
 	private char simbolo = 'L';
-	private boolean situacao = true;
+	private boolean situacao = false;
 	
 	public Arma() {
 		
 	}
 	
-	/*ublic Arma(String nome, int pontos, String URLimagem) {
-		this.nome = nome;
-		this.pontos = pontos;
-		this.URLimagem = URLimagem;
-	}*/
-
 	public void setSituacao(boolean situacao, String URLimagem) {
 		this.situacao = situacao;
 		this.URLimagem = URLimagem;

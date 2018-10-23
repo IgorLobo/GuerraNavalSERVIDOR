@@ -19,10 +19,10 @@ public class Jogo {
 				tabuleiro[i][j] = new Arma();
 			}						
 		}
-		randomArmas("PortaAviao", 5, 'P', true, 0.30f);
-		randomArmas("Submarino", 5, 'S', true, 0.30f);
-		randomArmas("Cruzador", 4, 'C', true, 0.20f);
-		randomArmas("Destroyer", 3, 'D', true, 0.20f);
+		randomArmas("PortaAviao", 5, 'P',"/images/porta-avioes.jpg", true, 0.30f);
+		randomArmas("Submarino", 5, 'S',"/images/Submarino.jpg", true, 0.30f);
+		randomArmas("Cruzador", 4, 'C',"/images/cruzador.jpg", true, 0.20f);
+		randomArmas("Destroyer", 3, 'D',"/images/destroyer.jpg", true, 0.20f);
 		
 		//JogadoresArrayList = new ArrayList<Jogador>();
 	}
@@ -41,7 +41,7 @@ public class Jogo {
 		return 0;
 	}
 	
-	private void randomArmas(String descricao, int pontos, char simbolo, boolean situacao, float porcentagem) {
+	private void randomArmas(String descricao, int pontos, char simbolo, String URLimagem, boolean situacao, float porcentagem) {
 		int linha = 0;
 		int coluna = 0;		
 		int qtdTotalArmas = 0;
@@ -68,7 +68,7 @@ public class Jogo {
 				tabuleiro[linha][coluna].setNome(descricao);
 				tabuleiro[linha][coluna].setPontos(pontos);
 				tabuleiro[linha][coluna].setSimbolo(simbolo);
-				tabuleiro[linha][coluna].setSituacao(situacao);
+				tabuleiro[linha][coluna].setSituacao(situacao,URLimagem);
 				qtdPorArma--;
 			}
 		}
@@ -79,6 +79,5 @@ public class Jogo {
 	
 	public Arma[][] getTabuleiro() {
 		return tabuleiro;
-	}
-
+	}	
 }

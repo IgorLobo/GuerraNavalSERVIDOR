@@ -2,7 +2,9 @@ package controller;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+
 import javax.swing.JOptionPane;
+
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -10,7 +12,11 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.SplitPane;
 import javafx.scene.control.TextArea;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import model.Jogo;
 
@@ -30,6 +36,12 @@ public class TelaJogoController implements Initializable {
 	@FXML
 	public GridPane grid_tabuleiroJogo;
 
+    @FXML
+    private ScrollPane scrollPane;
+	
+    @FXML
+    private SplitPane splitpane;
+    
 	@FXML
 	private TextArea txtArea_historicoJogadas;
 
@@ -39,7 +51,7 @@ public class TelaJogoController implements Initializable {
 			Jogo tab = new Jogo(tamanho);
 			grid_tabuleiroJogo.setVgap(10);
 			grid_tabuleiroJogo.setHgap(10);
-			grid_tabuleiroJogo.setMinSize(520, 600);
+			grid_tabuleiroJogo.resize(calcularTamanhoDaGrid(),calcularTamanhoDaGrid());
 			grid_tabuleiroJogo.setAlignment(Pos.TOP_LEFT);
 			Button botao[][] = new Button[tamanho][tamanho];
 
@@ -47,7 +59,7 @@ public class TelaJogoController implements Initializable {
 			for (int i = 0; i < tamanho; i++) {
 				for (int j = 0; j < tamanho; j++) {
 					botao[i][j] = new Button();
-					botao[i][j].setPrefSize(40, 40);
+					botao[i][j].setMaxSize(40, 40);
 					botao[i][j].setId(i + "-" + j);
 					botao[i][j].setOnAction(new EventHandler<ActionEvent>() {
 						public void handle(ActionEvent event) {
@@ -61,7 +73,10 @@ public class TelaJogoController implements Initializable {
 			for (int i = 0; i < tamanho; i++) {
 				for (int j = 0; j < tamanho; j++) {
 					grid_tabuleiroJogo.add(botao[i][j], j, i);
-					botao[i][j].setText("" + tab.getTabuleiro()[i][j].getSimbolo());
+					
+					
+					
+					botao[i][j].setGraphic(new ImageView(new Image(tab.getTabuleiro()[i][j].getURLimagem(),100, 100, false, false)));
 				}
 			}
 
@@ -87,4 +102,9 @@ public class TelaJogoController implements Initializable {
 		txtArea_historicoJogadas.setText(String.format("%s", historico));
 	}
 
+	public int calcularTamanhoDaGrid() {
+		int espaçamento = (10 * (this.tamanho - 1));
+		int tamanhoDosBotoes = 40 * tamanho;
+		return (espaçamento + tamanhoDosBotoes);
+	}
 }
