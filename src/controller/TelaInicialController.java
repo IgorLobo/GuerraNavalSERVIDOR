@@ -105,16 +105,12 @@ public class TelaInicialController implements Initializable {
 		try {
 			TelaJogoController.tamanho = Integer.parseInt(txf_tamanhoTabuleiro.getText());
 			abrirTela();
-			
-			
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null, e.getMessage(), "ERRO",
-					JOptionPane.ERROR_MESSAGE);			
+			JOptionPane.showMessageDialog(null, e.getMessage(), "ERRO",JOptionPane.ERROR_MESSAGE);			
 		}
 		
 	}
 
-	
 	@FXML
 	void click_btnPararJogo(ActionEvent event) {
 		abrirTela();
@@ -125,7 +121,6 @@ public class TelaInicialController implements Initializable {
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		try {
 			txf_ipServidor.setText(InetAddress.getLocalHost().getHostAddress());
-			txf_ipServidor.setEditable(false);
 			btn_pararServidor.setDisable(true);
 			btn_pararJogo.setDisable(true);	
 		} catch (UnknownHostException e) {

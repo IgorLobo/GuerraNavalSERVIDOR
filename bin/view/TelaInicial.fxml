@@ -11,7 +11,7 @@
 <AnchorPane prefHeight="268.0" prefWidth="490.0" style="-fx-background-image: url('images/telaInicialBackground.jpg');" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.TelaInicialController">
    <children>
       <Separator layoutX="227.0" layoutY="14.0" orientation="VERTICAL" prefHeight="244.0" prefWidth="7.0" />
-      <TextField fx:id="txf_ipServidor" layoutX="56.0" layoutY="48.0" prefHeight="25.0" prefWidth="162.0" />
+      <TextField fx:id="txf_ipServidor" editable="false" layoutX="56.0" layoutY="48.0" prefHeight="25.0" prefWidth="162.0" />
       <Button fx:id="btn_iniciarJogo" layoutX="24.0" layoutY="230.0" mnemonicParsing="false" onAction="#click_btnIniciarJogo" prefHeight="25.0" prefWidth="95.0" text="Iniciar Jogo" />
       <Button fx:id="btn_iniciarServidor" layoutX="24.0" layoutY="117.0" mnemonicParsing="false" onAction="#click_btnIniciarServidor" prefHeight="25.0" prefWidth="95.0" text="Iniciar Servidor" />
       <Label layoutX="59.0" layoutY="165.0" text="Configuração Jogo" textFill="#f2eaea">
