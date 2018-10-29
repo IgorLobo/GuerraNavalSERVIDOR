@@ -7,7 +7,9 @@ import java.net.Socket;
 import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.ResourceBundle;
+
 import javax.swing.JOptionPane;
+
 import connection.GerenciadorDeClientes;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -16,10 +18,11 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import model.Jogador;
 
 public class TelaInicialController implements Initializable {
 
@@ -27,12 +30,13 @@ public class TelaInicialController implements Initializable {
 	static ServerSocket servidor = null;
 	private Socket cliente = null;
 	
-	
-
 //---------------------------COMPONENTES DA TELA FXML----------------------------------------
 	@FXML
     private TextField txf_ipServidor;
 
+    @FXML
+    private TextField txf_portaServidor;
+	
     @FXML
     private Button btn_iniciarJogo;
 
@@ -40,19 +44,13 @@ public class TelaInicialController implements Initializable {
     private Button btn_iniciarServidor;
 
     @FXML
-    private TextField txf_portaServidor;
-
-    @FXML
     private Button btn_pararServidor;
-
-    @FXML
-    private Button btn_pararJogo;
 
     @FXML
     private TextField txf_tamanhoTabuleiro;
 
     @FXML
-    private TextArea txtArea_usuariosConectados;
+    private ListView<Jogador> list_conectados;
     
 
 //-----------------------------BUTTONS-------------------------------------------------------
@@ -101,7 +99,7 @@ public class TelaInicialController implements Initializable {
 	}
 
 	@FXML
-	public void click_btnIniciarJogo(ActionEvent event) {
+	void click_btnIniciarJogo(ActionEvent event) {
 		try {
 			TelaJogoController.tamanho = Integer.parseInt(txf_tamanhoTabuleiro.getText());
 			abrirTela();
@@ -113,7 +111,7 @@ public class TelaInicialController implements Initializable {
 
 	@FXML
 	void click_btnPararJogo(ActionEvent event) {
-		abrirTela();
+		
 	}
 
 //-----------------------------METODOS-------------------------------------------------------
@@ -122,14 +120,13 @@ public class TelaInicialController implements Initializable {
 		try {
 			txf_ipServidor.setText(InetAddress.getLocalHost().getHostAddress());
 			btn_pararServidor.setDisable(true);
-			btn_pararJogo.setDisable(true);	
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		}			
 	}
 	
 
-	public void receberAcessos() throws IOException {
+	private void receberAcessos() throws IOException {
 		try {
 			new GerenciadorDeClientes(cliente);
 		} catch (Exception e) {
@@ -139,7 +136,7 @@ public class TelaInicialController implements Initializable {
 		}
 	}
 	
-	public void abrirTela() {
+	private void abrirTela() {
 		try {
 		Parent root = FXMLLoader.load(this.getClass().getResource("/view/TelaJogo.fxml"));
 		Scene cena = new Scene(root);
@@ -154,8 +151,6 @@ public class TelaInicialController implements Initializable {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
-		
 	}
 
 }

@@ -9,12 +9,9 @@ public class Jogo {
 //******************ATRIBUTOS**************************
 	private Arma[][] tabuleiro = null;
 	private int tamanho = -1;	
-	private ArrayList<Jogador> JogadoresArrayList;
+	private ArrayList<Jogador> JogadoresArrayList = new ArrayList<Jogador>();
 	private int qtdArmasRestantes = 0;
-//****************METODOS*****************************
-	public Arma[][] getTabuleiro() {return tabuleiro;}
-	public int getQntArmasRestantes() {return qtdArmasRestantes;}
-	
+//****************CONSTRUTOR**************************
 	public Jogo(int tamanho) throws Exception {
 		if (tamanho < 3)
 			throw new Exception("O tamanho do tabuleiro não pode ser menor que 3.");
@@ -32,6 +29,29 @@ public class Jogo {
 		
 		//JogadoresArrayList = new ArrayList<Jogador>();
 	}
+//****************METODOS*****************************
+	public int getQntArmasRestantes() {return qtdArmasRestantes;}
+
+	public String getNomeJogador(int posicao) {
+		return JogadoresArrayList.get(posicao).getNome();
+	}
+		
+	public int getPontosJogador(int posicao) {
+		return JogadoresArrayList.get(posicao).getPontos();
+	}
+	
+	public int getTamanhoArrayJogadores() {
+		return JogadoresArrayList.size();
+	}
+	
+	public String getArmaURL(int linha, int coluna) {
+		return tabuleiro[linha][coluna].getURLimagem();
+	}
+	
+	public String getArmaNome(int linha,int coluna) {
+		return tabuleiro[linha][coluna].getNome();
+	}
+	
 
 	public int disparo(String cordenadas)  {
 		String[] cordenadasXY = cordenadas.split(",");

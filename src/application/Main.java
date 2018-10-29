@@ -17,10 +17,9 @@ public class Main extends Application {
 			Parent root = FXMLLoader.load(this.getClass().getResource("/view/TelaInicial.fxml"));
 			Scene scene = new Scene(root);
 			primaryStage.setScene(scene);
-			primaryStage.show();
 			primaryStage.setResizable(false);
-			primaryStage.show();
 			primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("/images/batalhaNaval.png")));
+			primaryStage.show();
 			this.primaryStage = primaryStage;
 		} catch (Exception e) {
 			e.printStackTrace();
