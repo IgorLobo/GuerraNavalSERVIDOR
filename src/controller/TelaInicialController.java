@@ -10,7 +10,7 @@ import java.util.ResourceBundle;
 
 import javax.swing.JOptionPane;
 
-import connection.GerenciadorDeClientes;
+import connection.Servidor;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -23,13 +23,16 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import model.Jogador;
+import model.Jogo;
 
 public class TelaInicialController implements Initializable {
 
 //----------------------------------ATRIBUTOS------------------------------------------------
 	static ServerSocket servidor = null;
-	private Socket cliente = null;
-	
+	private Socket socket = null;
+	private static ServerSocket server;
+	int jogador = 0;
+		
 //---------------------------COMPONENTES DA TELA FXML----------------------------------------
 	@FXML
     private TextField txf_ipServidor;
@@ -58,6 +61,7 @@ public class TelaInicialController implements Initializable {
 	@FXML
 	void click_btnIniciarServidor(ActionEvent event) {
 		try {
+			int tempo = 0;
 			// inicio server
 			System.out.println("startando servidor");
 
@@ -66,13 +70,19 @@ public class TelaInicialController implements Initializable {
 
 			// confirmação de iniciado
 			System.out.println("servidor startado");
-
-			// esperando conexões
-			while (true) {
-				cliente = servidor.accept();
-				receberAcessos();
-
-			}
+			
+			// esperando conexões		
+				while (jogador != 3) {
+					socket = servidor.accept();
+					System.out.println("Cliente conectado");
+					Thread thread = new Servidor(socket);
+					jogador++;
+					//tempo++;
+	                //thread.start();
+				}			
+			
+				
+			
 
 		} catch (IOException e) {
 			try {
@@ -120,20 +130,13 @@ public class TelaInicialController implements Initializable {
 		try {
 			txf_ipServidor.setText(InetAddress.getLocalHost().getHostAddress());
 			btn_pararServidor.setDisable(true);
+			
+			
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
-		}			
-	}
-	
-
-	private void receberAcessos() throws IOException {
-		try {
-			new GerenciadorDeClientes(cliente);
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null, "Porta indisponivel ou servidor desconectado", "ERRO",
-					JOptionPane.ERROR_MESSAGE);
 			e.printStackTrace();
-		}
+		}			
 	}
 	
 	private void abrirTela() {
@@ -147,7 +150,6 @@ public class TelaInicialController implements Initializable {
 		tela.setResizable(false);
 		tela.setTitle("JOGO GUERRA NAVAL");
 		tela.getIcons().add(new Image(getClass().getResourceAsStream("/images/batalhaNaval.png")));
-		
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

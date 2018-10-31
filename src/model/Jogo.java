@@ -1,5 +1,6 @@
 package model;
 
+import java.io.BufferedWriter;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -9,9 +10,13 @@ public class Jogo {
 //******************ATRIBUTOS**************************
 	private Arma[][] tabuleiro = null;
 	private int tamanho = -1;	
-	private ArrayList<Jogador> JogadoresArrayList = new ArrayList<Jogador>();
+	private ArrayList<Jogador> jogadoresArrayList = null;
 	private int qtdArmasRestantes = 0;
+	public static ArrayList<BufferedWriter> conexoesArrayList = new ArrayList<BufferedWriter>();
+	
 //****************CONSTRUTOR**************************
+	public Jogo() {}
+	
 	public Jogo(int tamanho) throws Exception {
 		if (tamanho < 3)
 			throw new Exception("O tamanho do tabuleiro não pode ser menor que 3.");
@@ -27,21 +32,21 @@ public class Jogo {
 		randomArmas("Cruzador", 4, 'C',  20);
 		randomArmas("Destroyer", 3, 'D', 20);
 		
-		//JogadoresArrayList = new ArrayList<Jogador>();
+		jogadoresArrayList = new ArrayList<Jogador>();
 	}
 //****************METODOS*****************************
 	public int getQntArmasRestantes() {return qtdArmasRestantes;}
-
+	
 	public String getNomeJogador(int posicao) {
-		return JogadoresArrayList.get(posicao).getNome();
+		return jogadoresArrayList.get(posicao).getNome();
 	}
 		
 	public int getPontosJogador(int posicao) {
-		return JogadoresArrayList.get(posicao).getPontos();
+		return jogadoresArrayList.get(posicao).getPontos();
 	}
 	
 	public int getTamanhoArrayJogadores() {
-		return JogadoresArrayList.size();
+		return jogadoresArrayList.size();
 	}
 	
 	public String getArmaURL(int linha, int coluna) {
@@ -51,7 +56,6 @@ public class Jogo {
 	public String getArmaNome(int linha,int coluna) {
 		return tabuleiro[linha][coluna].getNome();
 	}
-	
 
 	public int disparo(String cordenadas)  {
 		String[] cordenadasXY = cordenadas.split(",");
@@ -86,7 +90,5 @@ public class Jogo {
 				qtdArmasRestantes++;
 			}
 		}
-	}
-	
-		
+	}		
 }
