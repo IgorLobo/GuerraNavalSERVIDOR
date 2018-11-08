@@ -31,37 +31,38 @@ public class TelaInicialController implements Initializable {
 	static ServerSocket servidor = null;
 	private Socket socket = null;
 	private static ServerSocket server;
-	int jogador = 0;
-		
+	private Thread conexao = null;
+	private int jogador = 0;
+
 //---------------------------COMPONENTES DA TELA FXML----------------------------------------
 	@FXML
-    private TextField txf_ipServidor;
+	private TextField txf_ipServidor;
 
-    @FXML
-    private TextField txf_portaServidor;
-	
-    @FXML
-    private Button btn_iniciarJogo;
+	@FXML
+	private TextField txf_portaServidor;
 
-    @FXML
-    private Button btn_iniciarServidor;
+	@FXML
+	private Button btn_iniciarJogo;
 
-    @FXML
-    private Button btn_pararServidor;
+	@FXML
+	private Button btn_iniciarServidor;
 
-    @FXML
-    private TextField txf_tamanhoTabuleiro;
+	@FXML
+	private Button btn_pararServidor;
 
-    @FXML
-    private ListView<Jogador> list_conectados;
-    
+	@FXML
+	private TextField txf_tamanhoTabuleiro;
+
+	@FXML
+	private ListView<Jogador> list_conectados;
 
 //-----------------------------BUTTONS-------------------------------------------------------
 
 	@FXML
 	void click_btnIniciarServidor(ActionEvent event) {
-		try {
+		try {		
 			int tempo = 0;
+
 			// inicio server
 			System.out.println("startando servidor");
 
@@ -70,28 +71,29 @@ public class TelaInicialController implements Initializable {
 
 			// confirmação de iniciado
 			System.out.println("servidor startado");
-			
-			// esperando conexões		
-				while (jogador != 3) {
-					socket = servidor.accept();
-					System.out.println("Cliente conectado");
-					Thread thread = new Servidor(socket);
-					jogador++;
-					//tempo++;
-	                //thread.start();
-				}			
-			
-				
-			
+			conexao = new Thread() {
+				@Override
+				public void run() {
+					while (jogador != 3) {
+						try {
+							socket = servidor.accept();
 
+							System.out.println("Cliente conectado");
+							Thread thread = new Servidor(socket);
+							thread.start();
+						} catch (IOException e) {
+							JOptionPane.showMessageDialog(null, e.getMessage());
+						}
+					}
+				}
+			};conexao.start();			
 		} catch (IOException e) {
 			try {
 				if (servidor != null)
 					servidor.close();
 
 			} catch (IOException e1) {
-				JOptionPane.showMessageDialog(null, e.getMessage(), "ERRO",
-						JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, e.getMessage(), "ERRO", JOptionPane.ERROR_MESSAGE);
 				e.printStackTrace();
 			}
 		}
@@ -102,8 +104,7 @@ public class TelaInicialController implements Initializable {
 		try {
 			servidor.close();
 		} catch (IOException e) {
-			JOptionPane.showMessageDialog(null, e.getMessage(), "ERRO",
-					JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, e.getMessage(), "ERRO", JOptionPane.ERROR_MESSAGE);
 			e.printStackTrace();
 		}
 	}
@@ -114,14 +115,14 @@ public class TelaInicialController implements Initializable {
 			TelaJogoController.tamanho = Integer.parseInt(txf_tamanhoTabuleiro.getText());
 			abrirTela();
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null, e.getMessage(), "ERRO",JOptionPane.ERROR_MESSAGE);			
+			JOptionPane.showMessageDialog(null, e.getMessage(), "ERRO", JOptionPane.ERROR_MESSAGE);
 		}
-		
+
 	}
 
 	@FXML
 	void click_btnPararJogo(ActionEvent event) {
-		
+
 	}
 
 //-----------------------------METODOS-------------------------------------------------------
@@ -130,26 +131,25 @@ public class TelaInicialController implements Initializable {
 		try {
 			txf_ipServidor.setText(InetAddress.getLocalHost().getHostAddress());
 			btn_pararServidor.setDisable(true);
-			
-			
+
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		} catch (Exception e) {
 			e.printStackTrace();
-		}			
+		}
 	}
-	
+
 	private void abrirTela() {
 		try {
-		Parent root = FXMLLoader.load(this.getClass().getResource("/view/TelaJogo.fxml"));
-		Scene cena = new Scene(root);
-		Stage tela = new Stage();
-		tela.setScene(cena);
-		tela.show();
-		tela.setMaximized(true);
-		tela.setResizable(false);
-		tela.setTitle("JOGO GUERRA NAVAL");
-		tela.getIcons().add(new Image(getClass().getResourceAsStream("/images/batalhaNaval.png")));
+			Parent root = FXMLLoader.load(this.getClass().getResource("/view/TelaJogo.fxml"));
+			Scene cena = new Scene(root);
+			Stage tela = new Stage();
+			tela.setScene(cena);
+			tela.show();
+			tela.setMaximized(true);
+			tela.setResizable(false);
+			tela.setTitle("JOGO GUERRA NAVAL");
+			tela.getIcons().add(new Image(getClass().getResourceAsStream("/images/batalhaNaval.png")));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
