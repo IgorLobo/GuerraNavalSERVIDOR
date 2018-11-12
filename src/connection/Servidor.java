@@ -16,30 +16,79 @@ import java.net.Socket;
 
 import javax.swing.JOptionPane;
 
+import model.Jogador;
 import controller.TelaInicialController;
+import controller.TelaJogoController;
 import model.Jogo;
 
-public class Servidor extends Thread {
+public class Servidor implements Runnable {
 
-	private Socket socketCliente;
-	private int ip;
-	private String nomeCliente;
-	private int portaServidor;
-	private InputStream inputStream = null;
-	private InputStreamReader inputStreamReader = null;
-	private BufferedReader bufferedReader = null;
+	private Thread runServidor = null;
+	private ServerSocket serverSocket = null;
+	public volatile static boolean statusServidor = false;
+	private int portaServidor = 5555;
+	public static Jogo jogo;
 
-	public Servidor() {
+	public Servidor(int porta) {
+		this.runServidor = null;
+		this.serverSocket = null;
+		this.statusServidor = false;
+		this.portaServidor = porta;
+	}
+	
+	public Thread getRunServidor() {
+		return runServidor;
 	}
 
-	public Servidor(Socket socketCliente) {
-		try {
-			this.socketCliente = socketCliente;
-			this.inputStream = socketCliente.getInputStream();
-			this.inputStreamReader = new InputStreamReader(this.inputStream);
-			this.bufferedReader = new BufferedReader(this.inputStreamReader);
-		} catch (Exception e) {
-			// TODO: handle exception
+	public void setRunServidor(Thread runServidor) {
+		this.runServidor = runServidor;
+	}
+
+	public ServerSocket getServerSocket() {
+		return serverSocket;
+	}
+
+	public void setServerSocket(ServerSocket serverSocket) {
+		this.serverSocket = serverSocket;
+	}
+
+	public boolean getStatusServidor() {
+		return statusServidor;
+	}
+
+	public void setStatusServidor(boolean statusServidor) {
+		this.statusServidor = statusServidor;
+	}
+
+	public int getPortaServidor() {
+		return portaServidor;
+	}
+
+	public void setPortaServidor(int portaServidor) {
+		this.portaServidor = portaServidor;
+	}
+							
+	public synchronized void startServer() throws IOException {
+		if (runServidor == null) {
+			this.serverSocket = new ServerSocket(this.portaServidor);
+			this.runServidor = new Thread(this, "Thread-Servidor");
+			this.runServidor.start();
+			this.statusServidor = true;
+		}
+	}
+
+	public synchronized void stopServer() throws IOException {
+
+		if (serverSocket != null && runServidor != null) {
+			this.statusServidor = false;
+			this.runServidor.interrupt();
+			this.runServidor = null;
+			try {
+				this.serverSocket.close();
+
+			} catch (IOException e) {
+				System.out.println(e.getLocalizedMessage());
+			}
 		}
 	}
 
@@ -47,65 +96,23 @@ public class Servidor extends Thread {
 	@Override
 	public void run() {
 		try {
-			String mensagemTeste = "";
-			OutputStream outputStream = this.socketCliente.getOutputStream();
-			Writer writer = new OutputStreamWriter(outputStream);
-			BufferedWriter bufferedWriter = new BufferedWriter(writer);
-			Jogo.conexoesArrayList.add(bufferedWriter);
-			mensagemTeste = this.bufferedReader.readLine();
-			
-			while (true) {
-				
-			}
-			
+			int id = 0;
+			String ipJogador;
+			jogo = new Jogo(TelaJogoController.tamanho);
+			Jogador jogador= null;
+			//jogo.setVezJogo(0);
 
-		} catch (IOException e) {
-			JOptionPane.showMessageDialog(null, "Cliente fechou a conexão", "ERRO", JOptionPane.ERROR_MESSAGE);
-			e.printStackTrace();
-		}catch (Exception e) {
-			// TODO: handle exception
+			while (this.statusServidor) {
+				Socket Socket = this.serverSocket.accept();
+
+				ipJogador = Socket.getInetAddress().getHostAddress();
+				jogador = new Jogador(Socket, id, ipJogador, "jogador "+id);
+				jogo.setJogadores(jogador);
+				id++;
+			}
+
+		} catch (Exception e) {
+			System.out.println(e.getLocalizedMessage()+" : "+e.getMessage());
 		}
 	}
-
-	/**
-	 * 
-	 * 
-			// entrada e saída do servidor para client
-			BufferedReader leitor = new BufferedReader(new InputStreamReader(cliente.getInputStream()));
-			PrintWriter escritor = new PrintWriter(cliente.getOutputStream(), true);
-			escritor.println("escreva o nome");
-			String msg = leitor.readLine();
-			this.nomeCliente = msg;
-			escritor.println("olá nome " + msg);
-
-			while (true) {
-				msg = leitor.readLine();
-				escritor.println(msg + msg);
-			}
-	 * ----------Fechamento de conexão------- public void fecharSocket(Socket
-	 * socket) throws IOException { socket.close(); }
-	 * 
-	 * 
-	 * 
-	 * 
-	 * *--------Validação de chegada e sáida (protocolo)-------* public void
-	 * tratamentoConexao(Socket socket) throws IOException { try {
-	 * ObjectOutputStream output = new ObjectOutputStream(socket.getOutputStream());
-	 * ObjectInputStream input = new ObjectInputStream(socket.getInputStream());
-	 * 
-	 * String msg = input.readUTF(); System.out.println("Mensagem recebida");
-	 * output.writeUTF("TESTE DA PORRA");
-	 * 
-	 * // fecha entrada/saída de dadados output.close(); input.close();
-	 * 
-	 * } catch (IOException e) { // tratamento de falhas } finally {
-	 * fecharSocket(socket); } }
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 */
-
 }

@@ -28,11 +28,7 @@ import model.Jogo;
 public class TelaInicialController implements Initializable {
 
 //----------------------------------ATRIBUTOS------------------------------------------------
-	static ServerSocket servidor = null;
-	private Socket socket = null;
-	private static ServerSocket server;
-	private Thread conexao = null;
-	private int jogador = 0;
+	private Servidor servidor = null;
 
 //---------------------------COMPONENTES DA TELA FXML----------------------------------------
 	@FXML
@@ -60,50 +56,24 @@ public class TelaInicialController implements Initializable {
 
 	@FXML
 	void click_btnIniciarServidor(ActionEvent event) {
-		try {		
-			int tempo = 0;
-
+		try {
 			// inicio server
 			System.out.println("startando servidor");
 
-			// porta de conexão
-			servidor = new ServerSocket(Integer.parseInt(txf_portaServidor.getText()));
-
 			// confirmação de iniciado
 			System.out.println("servidor startado");
-			conexao = new Thread() {
-				@Override
-				public void run() {
-					while (jogador != 3) {
-						try {
-							socket = servidor.accept();
-
-							System.out.println("Cliente conectado");
-							Thread thread = new Servidor(socket);
-							thread.start();
-						} catch (IOException e) {
-							JOptionPane.showMessageDialog(null, e.getMessage());
-						}
-					}
-				}
-			};conexao.start();			
-		} catch (IOException e) {
-			try {
-				if (servidor != null)
-					servidor.close();
-
-			} catch (IOException e1) {
-				JOptionPane.showMessageDialog(null, e.getMessage(), "ERRO", JOptionPane.ERROR_MESSAGE);
-				e.printStackTrace();
-			}
+			servidor = new Servidor(Integer.parseInt(txf_portaServidor.getText()));
+			servidor.startServer();
+		} catch (Exception e) {
+			
 		}
 	}
 
 	@FXML
 	void click_btnPararServidor(ActionEvent event) {
 		try {
-			servidor.close();
-		} catch (IOException e) {
+			abrirTela();
+		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, e.getMessage(), "ERRO", JOptionPane.ERROR_MESSAGE);
 			e.printStackTrace();
 		}
@@ -111,18 +81,24 @@ public class TelaInicialController implements Initializable {
 
 	@FXML
 	void click_btnIniciarJogo(ActionEvent event) {
+		if(Integer.parseInt(txf_tamanhoTabuleiro.getText()) < 3) {
+			JOptionPane.showMessageDialog(null, "O tamanho não pode ser menor que 3!");
+		}else {
 		try {
 			TelaJogoController.tamanho = Integer.parseInt(txf_tamanhoTabuleiro.getText());
-			abrirTela();
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, e.getMessage(), "ERRO", JOptionPane.ERROR_MESSAGE);
 		}
-
+		}
 	}
 
 	@FXML
 	void click_btnPararJogo(ActionEvent event) {
-
+		try {
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
 	}
 
 //-----------------------------METODOS-------------------------------------------------------
@@ -130,8 +106,11 @@ public class TelaInicialController implements Initializable {
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		try {
 			txf_ipServidor.setText(InetAddress.getLocalHost().getHostAddress());
-			btn_pararServidor.setDisable(true);
-
+			btn_pararServidor.setDisable(false);
+			util.MaskTextfield.campoNumerico(txf_portaServidor);
+			util.MaskTextfield.campoNumerico(txf_tamanhoTabuleiro);
+			util.MaskTextfield.tamanhoMaximo(txf_tamanhoTabuleiro, 11);
+			util.MaskTextfield.tamanhoMaximo(txf_portaServidor, 4);
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		} catch (Exception e) {

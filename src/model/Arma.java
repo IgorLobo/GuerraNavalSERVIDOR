@@ -12,7 +12,7 @@ public class Arma {
 	public String getNome() {return nome;}
 	public int getPontos() {return pontos;}
 	public String getURLimagem() {return URLimagem;}
-	public boolean getSituacao() {return situacao;}
+  	public boolean getSituacao() {return situacao;}
 	public char getSimbolo() {return simbolo;}	
 	
 	public void setArma(String nome, int pontos, char simbolo) {

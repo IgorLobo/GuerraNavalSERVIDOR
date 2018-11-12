@@ -1,10 +1,13 @@
 package controller;
 
+import java.net.ServerSocket;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 import javax.swing.JOptionPane;
 
+import connection.ControladorTCP;
+import connection.Servidor;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -26,8 +29,10 @@ public class TelaJogoController implements Initializable {
 	public static int tamanho = -1;
 	private String historico = "";
 	private Jogo jogo = null;
+	private ControladorTCP comunicador= null;
 	private Button botoesDoTabuleiro[][];
 
+	
 //---------------------------COMPONENTES DA TELA FXML----------------------------------------
 
     @FXML
@@ -44,11 +49,14 @@ public class TelaJogoController implements Initializable {
     
     @FXML
     private Button btn_encerrarJogo;
+    
+    @FXML
+    private Button teste;
 
 //--------------------------------------BUTTONS-----------------------------------------------
 	private void iniciarJogo() {
 		try {
-			jogo = new Jogo(tamanho);
+			jogo = Servidor.jogo;
 			grid_tabuleiroJogo.resize(calcularTamanhoDaGrid(),calcularTamanhoDaGrid());
 			botoesDoTabuleiro = new Button[tamanho][tamanho];
 
@@ -85,21 +93,36 @@ public class TelaJogoController implements Initializable {
     
     @FXML
     void clickBtn_encerrarJogo(ActionEvent event) {
-
+    	try {
+    		comunicador = new ControladorTCP();
+    		comunicador.comunicador();
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, e.getMessage());
+		}
     }
 
 //---------------------------------METODOS------------------------------------------------------
-
+    
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		try {
 			iniciarJogo();
+			comunicacao();
 			lb_armasRestantes.setText(Integer.toString(jogo.getQntArmasRestantes()));
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, e.getMessage(), "ERRO", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 
+	private void comunicacao() {
+		try {
+		comunicador = new ControladorTCP();
+		comunicador.comunicador();
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, e.getMessage());
+		}
+	}
+	
 	private void atualizarHistorico(int linha, int coluna) {
 		historico += linha + "," + coluna +" - " + jogo.getArmaNome(linha, coluna)  + "\n";
 		txtArea_historicoJogadas.setText(String.format("%s", historico));
@@ -142,4 +165,5 @@ public class TelaJogoController implements Initializable {
 		}
 
 	}
+
 }
