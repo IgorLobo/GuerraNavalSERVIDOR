@@ -1,5 +1,10 @@
 package controller;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -31,8 +36,14 @@ public class TelaJogoController implements Initializable {
 	private Jogo jogo = null;
 	private ControladorTCP comunicador= null;
 	private Button botoesDoTabuleiro[][];
-
 	
+	
+	private int s= 0;
+	private Thread escutar = null;
+	private ObjectOutputStream objectOutputStream = null;
+	private ObjectInputStream objectInputStream = null;
+	private InputStream inputStream=null;
+	private OutputStream outputStream=null;
 //---------------------------COMPONENTES DA TELA FXML----------------------------------------
 
     @FXML
@@ -67,8 +78,12 @@ public class TelaJogoController implements Initializable {
 					botoesDoTabuleiro[i][j].setId(i + "," + j);
 					botoesDoTabuleiro[i][j].setOnAction(new EventHandler<ActionEvent>() {
 						public void handle(ActionEvent event) {
+							
+							
+							
+							
 							Button botaoOnClick = (Button) event.getSource();
-							jogo.disparo(botaoOnClick.getId());
+							s = jogo.disparo(botaoOnClick.getId());
 							int[] coordenadas = traduzirCoordenadas(botaoOnClick.getId());
 							botoesDoTabuleiro[coordenadas[0]][coordenadas[1]].setGraphic(new ImageView(new Image(jogo.getArmaURL(coordenadas[0],coordenadas[1]),60, 60, false, false)));
 							atualizarHistorico(coordenadas[0], coordenadas[1]);
@@ -94,8 +109,8 @@ public class TelaJogoController implements Initializable {
     @FXML
     void clickBtn_encerrarJogo(ActionEvent event) {
     	try {
-    		comunicador = new ControladorTCP();
-    		comunicador.comunicador();
+    		
+    		escutar();
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, e.getMessage());
 		}
@@ -107,7 +122,8 @@ public class TelaJogoController implements Initializable {
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		try {
 			iniciarJogo();
-			comunicacao();
+			escutar();
+			//comunicacao();
 			lb_armasRestantes.setText(Integer.toString(jogo.getQntArmasRestantes()));
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, e.getMessage(), "ERRO", JOptionPane.ERROR_MESSAGE);
@@ -124,7 +140,7 @@ public class TelaJogoController implements Initializable {
 	}
 	
 	private void atualizarHistorico(int linha, int coluna) {
-		historico += linha + "," + coluna +" - " + jogo.getArmaNome(linha, coluna)  + "\n";
+		historico += linha + "," + coluna +" - " + jogo.getArmaNome(linha, coluna)  + " "+s+ "\n";
 		txtArea_historicoJogadas.setText(String.format("%s", historico));
 	}
 	
@@ -164,6 +180,50 @@ public class TelaJogoController implements Initializable {
 		
 		}
 
+	}
+	
+	private void jogar() {
+		try {
+			String jogada = "";
+			int resultado = 0;
+			objectInputStream = new ObjectInputStream(Servidor.jogo.socketJogador().getInputStream());
+			objectOutputStream = new ObjectOutputStream(Servidor.jogo.socketJogador().getOutputStream());		
+			
+			jogada = objectInputStream.readUTF();
+			resultado = Servidor.jogo.disparo(jogada);
+			
+			objectOutputStream.writeUTF(String.valueOf(resultado));
+			objectOutputStream.flush();			
+		} catch (IOException e) {		
+		}
+	}
+	
+	public void escutar() {
+		try {
+			escutar = new Thread() {
+				@Override
+				public void run() {
+					try {
+						
+						while (true) {
+						objectOutputStream = new ObjectOutputStream(Servidor.jogo.socketJogador().getOutputStream());
+						System.out.println("OK");
+						objectOutputStream.writeUTF("true");
+						objectOutputStream.flush();
+						JOptionPane.showMessageDialog(null, "Aguardando jogador " + Servidor.jogo.getNomeJogador(Servidor.jogo.getIdJogadorDaVez()), "Jogada", JOptionPane.INFORMATION_MESSAGE);
+						jogar();
+						}						
+						
+					} catch (Exception e) {
+					}
+				}
+				
+			};
+			escutar.start();
+			
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, e.getMessage());
+		}
 	}
 
 }

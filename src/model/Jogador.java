@@ -12,7 +12,7 @@ import connection.Servidor;
 
 public class Jogador extends Thread{
 	
-	private int identificador = -1;
+	private int id = -1;
 	private String ip = "";
 	private String nome = "vazio";
 	private int pontos = 0;
@@ -23,7 +23,7 @@ public class Jogador extends Thread{
 	
 	
 	public Jogador(Socket socketJogador, int identificador, String ip, String nome) {
-		this.identificador = identificador;
+		this.id = identificador;
 		this.ip = ip;
 		this.nome = nome;
 		this.pontos = 0;
@@ -47,7 +47,7 @@ public class Jogador extends Thread{
 	
 	
 	public int getIdentificador() {
-		return identificador;
+		return id;
 	}
 
 	public String getIp() {

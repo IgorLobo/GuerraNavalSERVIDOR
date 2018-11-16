@@ -17,8 +17,7 @@ public class Jogo {
 	private List<Jogador> jogadoresArrayList = null;
 	private int qtdArmasRestantes = 0;
 	private int rodada = 0;
-	private int jogadorDaVez = 0;
-	public static ArrayList<BufferedWriter> conexoesArrayList = new ArrayList<BufferedWriter>();
+	private int jogadorDaVez = 0;	
 
 //****************CONSTRUTOR**************************
 	public Jogo() {
@@ -54,6 +53,7 @@ public class Jogo {
 	public int getPontosJogador(int posicao) {
 		return jogadoresArrayList.get(posicao).getPontos();
 	}
+	
 
 	public int getTamanhoArrayJogadores() {
 		return jogadoresArrayList.size();
