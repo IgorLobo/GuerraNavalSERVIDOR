@@ -8,6 +8,8 @@ public class Arma {
 	private String URLimagem = "/images/Livre.png";
 	private char simbolo = 'L';
 	private boolean situacao = false;
+	
+	
 //*****************METODOS***************************
 	public String getNome() {return nome;}
 	public int getPontos() {return pontos;}

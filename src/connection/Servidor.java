@@ -35,7 +35,7 @@ public class Servidor implements Runnable {
 		this.statusServidor = false;
 		this.portaServidor = porta;
 	}
-	
+
 	public Thread getRunServidor() {
 		return runServidor;
 	}
@@ -67,7 +67,7 @@ public class Servidor implements Runnable {
 	public void setPortaServidor(int portaServidor) {
 		this.portaServidor = portaServidor;
 	}
-							
+
 	public synchronized void startServer() throws IOException {
 		if (runServidor == null) {
 			this.serverSocket = new ServerSocket(this.portaServidor);
@@ -99,20 +99,20 @@ public class Servidor implements Runnable {
 			int id = 0;
 			String ipJogador;
 			jogo = new Jogo(TelaJogoController.tamanho);
-			Jogador jogador= null;
-			//jogo.setVezJogo(0);
+			Jogador jogador = null;
+			// jogo.setVezJogo(0);
 
 			while (this.statusServidor) {
 				Socket Socket = this.serverSocket.accept();
 
 				ipJogador = Socket.getInetAddress().getHostAddress();
-				jogador = new Jogador(Socket, id, ipJogador, "jogador "+id);
+				jogador = new Jogador(Socket, id, ipJogador, "jogador " + id);
 				jogo.setJogadores(jogador);
 				id++;
 			}
 
 		} catch (Exception e) {
-			System.out.println(e.getLocalizedMessage()+" : "+e.getMessage());
+			System.out.println(e.getLocalizedMessage() + " : " + e.getMessage());
 		}
 	}
 }

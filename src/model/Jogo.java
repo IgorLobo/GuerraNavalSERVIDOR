@@ -18,12 +18,8 @@ public class Jogo {
 	private int qtdArmasRestantes = 0;
 	private int rodada = 0;
 	private int jogadorDaVez = 0;
-	public static ArrayList<BufferedWriter> conexoesArrayList = new ArrayList<BufferedWriter>();
 
 //****************CONSTRUTOR**************************
-	public Jogo() {
-	}
-
 	public Jogo(int tamanho) throws Exception {
 		if (tamanho < 3)
 			throw new Exception("O tamanho do tabuleiro não pode ser menor que 3.");
@@ -42,7 +38,7 @@ public class Jogo {
 		jogadoresArrayList = new ArrayList<Jogador>();
 	}
 
-//****************METODOS*****************************
+	// ****************METODOS*****************************
 	public int getQntArmasRestantes() {
 		return qtdArmasRestantes;
 	}
@@ -66,9 +62,13 @@ public class Jogo {
 	public String getArmaNome(int linha, int coluna) {
 		return tabuleiro[linha][coluna].getNome();
 	}
-	
+
 	public Socket socketJogador() {
 		return jogadoresArrayList.get(jogadorDaVez).getSocketJogador();
+	}
+
+	public Socket socketJogador(int Id) {
+		return jogadoresArrayList.get(Id).getSocketJogador();
 	}
 
 	public void setJogadores(Jogador jogador) {
@@ -76,7 +76,7 @@ public class Jogo {
 	}
 
 	public int getIdJogadorDaVez() {
-	 if((jogadorDaVez == 0) || (jogadorDaVez > 0 && jogadorDaVez < getTamanhoArrayJogadores())) {
+		if ((jogadorDaVez == 0) || (jogadorDaVez > 0 && jogadorDaVez < getTamanhoArrayJogadores())) {
 			return jogadoresArrayList.get(jogadorDaVez).getIdentificador();
 		} else {
 			jogadorDaVez = 0;
@@ -85,8 +85,8 @@ public class Jogo {
 	}
 
 	private void jogadorDaVez() {
-		if((jogadorDaVez == 0) || (jogadorDaVez > 0 && jogadorDaVez < getTamanhoArrayJogadores())) {
-			this.jogadorDaVez ++;
+		if ((jogadorDaVez > 0 && jogadorDaVez < getTamanhoArrayJogadores()) || (getTamanhoArrayJogadores() != 0)) {
+			this.jogadorDaVez++;
 		} else {
 			jogadorDaVez = 0;
 		}

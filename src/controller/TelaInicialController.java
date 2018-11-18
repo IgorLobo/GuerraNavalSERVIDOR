@@ -53,19 +53,16 @@ public class TelaInicialController implements Initializable {
 	private ListView<Jogador> list_conectados;
 
 //-----------------------------BUTTONS-------------------------------------------------------
-
 	@FXML
 	void click_btnIniciarServidor(ActionEvent event) {
 		try {
-			// inicio server
 			System.out.println("startando servidor");
-
-			// confirmação de iniciado
 			System.out.println("servidor startado");
 			servidor = new Servidor(Integer.parseInt(txf_portaServidor.getText()));
 			servidor.startServer();
 		} catch (Exception e) {
-			
+			JOptionPane.showMessageDialog(null, e.getMessage(), "ERRO", JOptionPane.ERROR_MESSAGE);
+			e.printStackTrace();
 		}
 	}
 
@@ -73,6 +70,8 @@ public class TelaInicialController implements Initializable {
 	void click_btnPararServidor(ActionEvent event) {
 		try {
 			abrirTela();
+			servidor.stopServer();
+			servidor.setStatusServidor(false);
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, e.getMessage(), "ERRO", JOptionPane.ERROR_MESSAGE);
 			e.printStackTrace();
@@ -81,23 +80,14 @@ public class TelaInicialController implements Initializable {
 
 	@FXML
 	void click_btnIniciarJogo(ActionEvent event) {
-		if(Integer.parseInt(txf_tamanhoTabuleiro.getText()) < 3) {
+		if (Integer.parseInt(txf_tamanhoTabuleiro.getText()) < 3) {
 			JOptionPane.showMessageDialog(null, "O tamanho não pode ser menor que 3!");
-		}else {
-		try {
-			TelaJogoController.tamanho = Integer.parseInt(txf_tamanhoTabuleiro.getText());
-		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null, e.getMessage(), "ERRO", JOptionPane.ERROR_MESSAGE);
-		}
-		}
-	}
-
-	@FXML
-	void click_btnPararJogo(ActionEvent event) {
-		try {
-			
-		} catch (Exception e) {
-			// TODO: handle exception
+		} else {
+			try {
+				TelaJogoController.tamanho = Integer.parseInt(txf_tamanhoTabuleiro.getText());
+			} catch (Exception e) {
+				JOptionPane.showMessageDialog(null, e.getMessage(), "ERRO", JOptionPane.ERROR_MESSAGE);
+			}
 		}
 	}
 
