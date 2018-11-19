@@ -2,17 +2,17 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="268.0" prefWidth="490.0" style="-fx-background-image: url('images/telaInicialBackground.jpg');" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.TelaInicialController">
+<AnchorPane prefHeight="268.0" prefWidth="490.0" style="-fx-background-image: url('images/telaInicialBackground.jpg'); -fx-background-color: black;" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.TelaInicialController">
    <children>
       <Separator layoutX="227.0" layoutY="14.0" orientation="VERTICAL" prefHeight="244.0" prefWidth="7.0" />
       <TextField fx:id="txf_ipServidor" editable="false" focusTraversable="false" layoutX="56.0" layoutY="48.0" prefHeight="25.0" prefWidth="162.0" />
-      <Button fx:id="btn_iniciarJogo" layoutX="124.0" layoutY="229.0" mnemonicParsing="false" onAction="#click_btnIniciarJogo" prefHeight="25.0" prefWidth="95.0" text="Iniciar Jogo" />
+      <Button fx:id="btn_tamanho" layoutX="108.0" layoutY="229.0" mnemonicParsing="false" onAction="#click_btnTamanho" prefHeight="25.0" prefWidth="111.0" text="Definir tamanho" />
       <Button fx:id="btn_iniciarServidor" layoutX="24.0" layoutY="117.0" mnemonicParsing="false" onAction="#click_btnIniciarServidor" prefHeight="25.0" prefWidth="95.0" text="Iniciar Servidor" />
       <Label layoutX="59.0" layoutY="165.0" text="Configuração Jogo" textFill="#f2eaea">
          <font>
@@ -35,7 +35,7 @@
          </font>
       </Label>
       <TextField fx:id="txf_portaServidor" layoutX="56.0" layoutY="82.0" prefHeight="25.0" prefWidth="162.0" />
-      <Button fx:id="btn_pararServidor" layoutX="124.0" layoutY="117.0" mnemonicParsing="false" onAction="#click_btnPararServidor" prefHeight="25.0" prefWidth="95.0" text="Parar Servidor" />
+      <Button fx:id="btn_iniciarJogo" layoutX="124.0" layoutY="117.0" mnemonicParsing="false" onAction="#click_btnIniciarJogo" prefHeight="25.0" prefWidth="95.0" text="Iniciar Jogo" />
       <Separator layoutX="7.0" layoutY="156.0" prefHeight="3.0" prefWidth="214.0" />
       <TextField fx:id="txf_tamanhoTabuleiro" layoutX="128.0" layoutY="197.0" prefHeight="25.0" prefWidth="88.0" />
       <Label layoutX="12.0" layoutY="199.0" text="Tamanho tabuleiro:" textFill="#f2eaea">
@@ -48,6 +48,6 @@
             <Font name="System Bold" size="14.0" />
          </font>
       </Label>
-      <ListView fx:id="list_conectados" layoutX="240.0" layoutY="26.0" prefHeight="232.0" prefWidth="240.0" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="26.0" />
+      <TextArea fx:id="txa_lista" layoutX="247.0" layoutY="28.0" prefHeight="224.0" prefWidth="228.0" />
    </children>
 </AnchorPane>

@@ -19,6 +19,7 @@ public class Main extends Application {
 			primaryStage.setScene(scene);
 			primaryStage.setResizable(false);
 			primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("/images/batalhaNaval.png")));
+			primaryStage.sizeToScene();
 			primaryStage.show();
 			this.primaryStage = primaryStage;
 		} catch (Exception e) {

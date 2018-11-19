@@ -19,6 +19,7 @@ import javax.swing.JOptionPane;
 import model.Jogador;
 import controller.TelaInicialController;
 import controller.TelaJogoController;
+import javafx.application.Platform;
 import model.Jogo;
 
 public class Servidor implements Runnable {
@@ -124,6 +125,8 @@ public class Servidor implements Runnable {
 				jogador = new Jogador(socket, id, ipJogador, mensagemCliente);
 				jogo.setJogadores(jogador);
 				id++;
+				
+				
 				/*objectInputStream.close();	
 				objectOutputStream.close();
 				socket.close();*/

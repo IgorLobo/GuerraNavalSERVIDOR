@@ -50,6 +50,14 @@ public class Jogo {
 	public int getPontosJogador(int posicao) {
 		return jogadoresArrayList.get(posicao).getPontos();
 	}
+	
+	public void setPontosJogador(int posicao,int pontos) {
+		jogadoresArrayList.get(posicao).adicionarPontos(pontos);
+	}
+	
+	public int getPontoArma(int linha, int coluna) {
+		return tabuleiro[linha][coluna].getPontos();
+	}
 
 	public int getTamanhoArrayJogadores() {
 		return jogadoresArrayList.size();

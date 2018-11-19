@@ -74,8 +74,9 @@ public class TelaJogoController implements Initializable {
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		try {
+			grid_tabuleiroJogo.setDisable(true);
 			iniciarJogo();
-			atualizar();
+			atualizarArma();
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, e.getMessage(), "ERRO", JOptionPane.ERROR_MESSAGE);
 		}
@@ -100,7 +101,7 @@ public class TelaJogoController implements Initializable {
 							botoesDoTabuleiro[coordenadas[0]][coordenadas[1]].setGraphic(new ImageView(
 									new Image(jogo.getArmaURL(coordenadas[0], coordenadas[1]), 60, 60, false, false)));
 							atualizarHistorico(coordenadas[0], coordenadas[1]);
-							atualizar();
+							atualizarArma();
 						}
 					});
 				}
@@ -125,7 +126,7 @@ public class TelaJogoController implements Initializable {
 		txtArea_historicoJogadas.setText(String.format("%s", historico));
 	}
 
-	private synchronized void atualizar() {
+	private synchronized void atualizarArma() {
 		Platform.runLater(new Runnable() {
 		    @Override
 		    public void run() {
@@ -148,27 +149,34 @@ public class TelaJogoController implements Initializable {
 		return (espaçamento + tamanhoDosBotoes);
 	}
 
+
 	@SuppressWarnings("static-access")
 	private void atualizarListaDeJogadores() {
-		Label nome = new Label("Nome");
-		nome.setFont(Font.font("Arial Black", 16));
-		Label pontos = new Label("Pontos");
-		pontos.setFont(Font.font("Arial Black", 16));
-		grid_jogadores.setHalignment(nome, HPos.CENTER);
-		grid_jogadores.setHalignment(pontos, HPos.CENTER);
-		grid_jogadores.add(nome, 0, 0);
-		grid_jogadores.add(pontos, 1, 0);
+		Platform.runLater(new Runnable() {
+		    @Override
+		    public void run() {
+		    	Label nome = new Label("Nome");
+				nome.setFont(Font.font("Arial Black", 16));
+				Label pontos = new Label("Pontos");
+				pontos.setFont(Font.font("Arial Black", 16));
+				grid_jogadores.setHalignment(nome, HPos.CENTER);
+				grid_jogadores.setHalignment(pontos, HPos.CENTER);
+				grid_jogadores.add(nome, 0, 0);
+				grid_jogadores.add(pontos, 1, 0);
 
-		for (int i = 0; i < jogo.getTamanhoArrayJogadores(); i++) {
-			nome = new Label(jogo.getNomeJogador(i));
-			pontos = new Label(Integer.toString(jogo.getPontosJogador(i)));
-			grid_jogadores.getRowConstraints().add(new RowConstraints(25));
-			grid_jogadores.add(nome, 0, i + 1);
-			grid_jogadores.add(pontos, 1, i + 1);
-			grid_jogadores.setHalignment(nome, HPos.CENTER);
-			grid_jogadores.setHalignment(pontos, HPos.CENTER);
-		}
-	}
+				for (int i = 0; i < Servidor.jogo.getTamanhoArrayJogadores(); i++) {
+					nome = new Label(Servidor.jogo.getNomeJogador(i));
+					pontos = new Label(Integer.toString(Servidor.jogo.getPontosJogador(i)));
+					grid_jogadores.getRowConstraints().add(new RowConstraints(25));
+					grid_jogadores.add(nome, 0, i + 1);
+					grid_jogadores.add(pontos, 1, i + 1);
+					grid_jogadores.setHalignment(nome, HPos.CENTER);
+					grid_jogadores.setHalignment(pontos, HPos.CENTER);
+				}
+   
+		    }
+		});
+			}
 
 	private void jogadaCliente() {
 		try {
@@ -182,7 +190,10 @@ public class TelaJogoController implements Initializable {
 			mensagemJogada += Servidor.jogo.getArmaSituacao(Integer.parseInt(coordenada[0]),Integer.parseInt(coordenada[1])) + ",";
 			mensagemJogada += Servidor.jogo.getArmaNome(Integer.parseInt(coordenada[0]),Integer.parseInt(coordenada[1]))+ ",";
 			mensagemJogada += Servidor.jogo.disparo(jogada);
-
+			
+			Servidor.jogo.setPontosJogador(Servidor.jogo.getIdJogadorDaVez(),Servidor.jogo.getPontoArma(Integer.parseInt(coordenada[0]),Integer.parseInt(coordenada[1])));
+			atualizarListaDeJogadores();
+			
 			objectOutputStream.writeUTF(mensagemJogada);
 			objectOutputStream.flush();
 		} catch (IOException e) {
@@ -193,9 +204,10 @@ public class TelaJogoController implements Initializable {
 		}
 	}
 
+
 	public void esperarJogador() {
 		try {
-			atualizar();
+			atualizarArma();
 			esperarJogador = new Thread() {
 				@Override
 				public void run() {
@@ -215,6 +227,7 @@ public class TelaJogoController implements Initializable {
 						objectOutputStream = new ObjectOutputStream(Servidor.jogo.socketJogador().getOutputStream());
 						objectOutputStream.writeUTF("true");
 						objectOutputStream.flush();
+						
 						// System.out.println(Servidor.jogo.getNomeJogador(Servidor.jogo.getIdJogadorDaVez()));
 
 						// JOptionPane.showMessageDialog(null, "Aguardando jogador " +

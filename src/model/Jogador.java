@@ -53,5 +53,10 @@ public class Jogador extends Thread {
 	public void adicionarPontos(int pontos) {
 		this.pontos += pontos;
 	}
+	
+	@Override
+	public String toString() {
+		return "Nome:" + nome;
+	}
 
 }
