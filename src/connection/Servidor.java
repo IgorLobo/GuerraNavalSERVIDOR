@@ -23,11 +23,17 @@ import model.Jogo;
 
 public class Servidor implements Runnable {
 
+	private ObjectOutputStream objectOutputStream = null;
+	private ObjectInputStream objectInputStream = null;
+	private InputStream inputStream = null;
+	private OutputStream outputStream = null;
+
 	private Thread runServidor = null;
 	private ServerSocket serverSocket = null;
 	public volatile static boolean statusServidor = false;
 	private int portaServidor = 5555;
-	public static Jogo jogo;
+	public static Jogo jogo = null;
+	private Jogador jogador = null;
 
 	public Servidor(int porta) {
 		this.runServidor = null;
@@ -97,22 +103,33 @@ public class Servidor implements Runnable {
 	public void run() {
 		try {
 			int id = 0;
-			String ipJogador;
+			String ipJogador = "";
+			String mensagemCliente = "";
 			jogo = new Jogo(TelaJogoController.tamanho);
-			Jogador jogador = null;
-			// jogo.setVezJogo(0);
+			jogador = null;
 
 			while (this.statusServidor) {
-				Socket Socket = this.serverSocket.accept();
+				Socket socket = this.serverSocket.accept();
+				System.out.println("Entrou o trodos");
 
-				ipJogador = Socket.getInetAddress().getHostAddress();
-				jogador = new Jogador(Socket, id, ipJogador, "jogador " + id);
+				objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
+				objectInputStream = new ObjectInputStream(socket.getInputStream());
+				
+				objectOutputStream.writeUTF(String.valueOf(TelaJogoController.tamanho));
+				objectOutputStream.flush();				
+				
+				mensagemCliente = objectInputStream.readUTF();
+
+				ipJogador = socket.getInetAddress().getHostAddress();
+				jogador = new Jogador(socket, id, ipJogador, mensagemCliente);
 				jogo.setJogadores(jogador);
 				id++;
+				/*objectInputStream.close();	
+				objectOutputStream.close();
+				socket.close();*/
 			}
 
-		} catch (Exception e) {
-			System.out.println(e.getLocalizedMessage() + " : " + e.getMessage());
+		} catch (Exception e) {			
 		}
 	}
 }

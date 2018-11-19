@@ -10,6 +10,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import javax.swing.JOptionPane;
 import connection.Servidor;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -36,6 +37,7 @@ public class TelaJogoController implements Initializable {
 	private ObjectInputStream objectInputStream = null;
 	private InputStream inputStream = null;
 	private OutputStream outputStream = null;
+	private Thread esperarJogador = null;
 
 //---------------------------COMPONENTES DA TELA FXML----------------------------------------
 	@FXML
@@ -73,7 +75,7 @@ public class TelaJogoController implements Initializable {
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		try {
 			iniciarJogo();
-			lb_armasRestantes.setText(Integer.toString(jogo.getQntArmasRestantes()));
+			atualizar();
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, e.getMessage(), "ERRO", JOptionPane.ERROR_MESSAGE);
 		}
@@ -123,8 +125,13 @@ public class TelaJogoController implements Initializable {
 		txtArea_historicoJogadas.setText(String.format("%s", historico));
 	}
 
-	private void atualizar() {
-		lb_armasRestantes.setText(Integer.toString(jogo.getQntArmasRestantes()));
+	private synchronized void atualizar() {
+		Platform.runLater(new Runnable() {
+		    @Override
+		    public void run() {
+		    	lb_armasRestantes.setText(Integer.toString(jogo.getQntArmasRestantes()));
+		    }
+		});
 	}
 
 	private int[] traduzirCoordenadas(String coordenadas) {
@@ -166,18 +173,21 @@ public class TelaJogoController implements Initializable {
 	private void jogadaCliente() {
 		try {
 			String jogada = "";
-			int resultado = 0;
+			String mensagemJogada = "";
 			objectInputStream = new ObjectInputStream(Servidor.jogo.socketJogador().getInputStream());
 			objectOutputStream = new ObjectOutputStream(Servidor.jogo.socketJogador().getOutputStream());
 
 			jogada = objectInputStream.readUTF();
-			resultado = Servidor.jogo.disparo(jogada);
+			String[] coordenada = Servidor.jogo.traduzir(jogada);
+			mensagemJogada += Servidor.jogo.getArmaSituacao(Integer.parseInt(coordenada[0]),Integer.parseInt(coordenada[1])) + ",";
+			mensagemJogada += Servidor.jogo.getArmaNome(Integer.parseInt(coordenada[0]),Integer.parseInt(coordenada[1]))+ ",";
+			mensagemJogada += Servidor.jogo.disparo(jogada);
 
-			objectOutputStream.writeUTF(String.valueOf(resultado));
+			objectOutputStream.writeUTF(mensagemJogada);
 			objectOutputStream.flush();
-			atualizar();
 		} catch (IOException e) {
-
+			JOptionPane.showMessageDialog(null, e.getMessage(), "ERRO", JOptionPane.ERROR_MESSAGE);
+			e.getMessage();
 		} finally {
 			esperarJogador();
 		}
@@ -185,29 +195,45 @@ public class TelaJogoController implements Initializable {
 
 	public void esperarJogador() {
 		try {
-			/*
-			 * String s = "true"; for (int i = 0; i <
-			 * Servidor.jogo.getTamanhoArrayJogadores(); i++) { if
-			 * (Servidor.jogo.getIdJogadorDaVez() != i) { s = "false"; }else { s = "true"; }
-			 * objectOutputStream = new
-			 * ObjectOutputStream(Servidor.jogo.socketJogador(i).getOutputStream());
-			 * objectOutputStream.writeUTF(s); objectOutputStream.flush(); }
-			 */
+			atualizar();
+			esperarJogador = new Thread() {
+				@Override
+				public void run() {
+					try {
+						/*
+						 * String s = "true"; for (int i = 0; i <
+						 * Servidor.jogo.getTamanhoArrayJogadores(); i++) { if
+						 * (Servidor.jogo.getIdJogadorDaVez() != i) { s = "false"; }else { s = "true"; }
+						 * objectOutputStream = new
+						 * ObjectOutputStream(Servidor.jogo.socketJogador(i).getOutputStream());
+						 * objectOutputStream.writeUTF(s); objectOutputStream.flush(); }
+						 */
 
-			System.out.println("Proximo jogador: " + Servidor.jogo.getNomeJogador(Servidor.jogo.getIdJogadorDaVez())
-					+ ", Socket correspondente: " + Servidor.jogo.socketJogador());
-			objectOutputStream = new ObjectOutputStream(Servidor.jogo.socketJogador().getOutputStream());
-			objectOutputStream.writeUTF("true");
-			objectOutputStream.flush();
-			System.out.println(Servidor.jogo.getNomeJogador(Servidor.jogo.getIdJogadorDaVez()));
+						System.out.println(
+								"Proximo jogador: " + Servidor.jogo.getNomeJogador(Servidor.jogo.getIdJogadorDaVez())
+										+ ", Socket correspondente: " + Servidor.jogo.socketJogador());
+						objectOutputStream = new ObjectOutputStream(Servidor.jogo.socketJogador().getOutputStream());
+						objectOutputStream.writeUTF("true");
+						objectOutputStream.flush();
+						// System.out.println(Servidor.jogo.getNomeJogador(Servidor.jogo.getIdJogadorDaVez()));
 
-			// JOptionPane.showMessageDialog(null, "Aguardando jogador " +
-			// Servidor.jogo.getNomeJogador(Servidor.jogo.getIdJogadorDaVez()), "Jogada",
-			// 0);
+						// JOptionPane.showMessageDialog(null, "Aguardando jogador " +
+						// Servidor.jogo.getNomeJogador(Servidor.jogo.getIdJogadorDaVez()), "Jogada",
+						// 0);
 
-			jogadaCliente();
+						jogadaCliente();
+						//atualizar();
+					} catch (Exception e) {
+						JOptionPane.showMessageDialog(null, e.getMessage(), "ERRO", JOptionPane.ERROR_MESSAGE);
+						e.getMessage();
+					}
+				}
+			};
+			esperarJogador.start();
+
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null, e.getMessage());
+			JOptionPane.showMessageDialog(null, e.getMessage(), "ERRO", JOptionPane.ERROR_MESSAGE);
+			e.getMessage();
 		}
 	}
 

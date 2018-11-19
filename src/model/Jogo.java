@@ -63,6 +63,10 @@ public class Jogo {
 		return tabuleiro[linha][coluna].getNome();
 	}
 
+	public boolean getArmaSituacao(int linha, int coluna) {
+		return tabuleiro[linha][coluna].getSituacao();
+	}
+	
 	public Socket socketJogador() {
 		return jogadoresArrayList.get(jogadorDaVez).getSocketJogador();
 	}
@@ -111,6 +115,12 @@ public class Jogo {
 		jogadorDaVez();
 		return 0;
 	}
+	
+	public String[] traduzir(String jogada) {
+		String[] s = jogada.split(",");
+		return s;
+	}
+	
 
 	private void randomArmas(String nome, int pontos, char simbolo, int porcentagem) {
 		int linha = 0;
